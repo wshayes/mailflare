@@ -48,6 +48,8 @@ export async function fetchMailboxOptions(force = false): Promise<MailboxOption[
 				domainId: m.domainId,
 				localPart: m.localPart,
 				hostname: m.hostname,
+				iconLabel: m.iconLabel,
+				iconColor: m.iconColor,
 				displayName: m.displayName,
 				signature: m.signature,
 				autoReplyEnabled: m.autoReplyEnabled,

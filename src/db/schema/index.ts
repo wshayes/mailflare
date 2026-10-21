@@ -65,6 +65,9 @@ export const domains = sqliteTable(
 		routingEnabled: integer("routing_enabled", { mode: "boolean" }).notNull().default(false),
 		/** The operator skipped adding/checking DNS; set until they confirm the records exist. */
 		dnsSkipped: integer("dns_skipped", { mode: "boolean" }).notNull().default(false),
+		/** Sidebar badge: up to 3 characters and a #rrggbb colour; null falls back to the hostname. */
+		iconLabel: text("icon_label"),
+		iconColor: text("icon_color"),
 		createdAt: integer("created_at", { mode: "timestamp" })
 			.notNull()
 			.$defaultFn(() => new Date()),

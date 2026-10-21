@@ -30,6 +30,7 @@ import {
 	formatMessageListTimestamp,
 	getPageRange,
 	getMessageParty,
+	getMessagePartyAddress,
 	getMessagePartyClassName,
 	getMessagePreview,
 	getUnreadFlipCount,
@@ -48,6 +49,7 @@ import {
 	supportsPermanentDelete,
 } from "@/lib/messages/permanent-delete-utils";
 import clsx from "clsx";
+import { DomainBadge } from "@/components/domain-badge";
 
 const pageSize = 25;
 
@@ -58,6 +60,7 @@ function MessageListRow({
 	active = false,
 	compact = false,
 	currentAccountName,
+	mailbox,
 	onSelectedChange,
 	onMessageAction,
 	dragMessageIds,
@@ -75,6 +78,16 @@ function MessageListRow({
 	const draggable = config.folder === "inbox" && message.direction === "inbound";
 	const party = getMessageParty(rowMessage, config.folder, currentAccountName, t);
 	const preview = getMessagePreview(rowMessage, config.folder, t);
+	const partyAddress = getMessagePartyAddress(rowMessage, config.folder);
+	const mailboxBadge = mailbox && (
+		<DomainBadge
+			hostname={mailbox.hostname}
+			iconLabel={mailbox.iconLabel}
+			iconColor={mailbox.iconColor}
+			title={`${mailbox.localPart}@${mailbox.hostname}`}
+			className="mr-2 align-[1px]"
+		/>
+	);
 	const href = `${config.hrefPrefix}/${message.id}`;
 	const navigation = useMessageNavigation(href, rowMessage);
 
@@ -149,7 +162,8 @@ function MessageListRow({
 				/>
 				<Link href={href} onClick={config.folder === "drafts" ? undefined : onMessageNavigate} aria-current={active ? "true" : undefined} className="min-w-0">
 					<span className="flex items-baseline justify-between gap-3">
-						<span className={clsx(unread && "font-semibold",getMessagePartyClassName(rowMessage, config.folder))}>
+						<span className={clsx(unread && "font-semibold",getMessagePartyClassName(rowMessage, config.folder))} title={partyAddress}>
+							{mailboxBadge}
 							{unread && <span className="sr-only">{t("list.unread")} </span>}
 							{party}
 
@@ -220,7 +234,8 @@ function MessageListRow({
 			{(config.folder !== "inbox" || message.direction !== "inbound") && (
 				<Icon className="h-4 w-4 text-neutral-300" />
 			)}
-			<span className={clsx(unread && "font-semibold", getMessagePartyClassName(rowMessage, config.folder))}>
+			<span className={clsx(unread && "font-semibold", getMessagePartyClassName(rowMessage, config.folder))} title={partyAddress}>
+				{mailboxBadge}
 				{unread && <span className="sr-only">{t("list.unread")} </span>}
 				{party}
 
@@ -301,7 +316,8 @@ export function MessageFolderPage({
 }: MessageFolderPageProps) {
 	const { t } = useLanguage();
 	const title = config.titleKey ? t(config.titleKey) : config.title;
-	const { selectedMailbox, isLoading: mailboxesLoading, allInboxes, listMailboxId } = useSelectedMailbox();
+	const { selectedMailbox, mailboxes, isLoading: mailboxesLoading, allInboxes, listMailboxId } = useSelectedMailbox();
+	const mailboxById = useMemo(() => new Map(mailboxes.map((mailbox) => [mailbox.id, mailbox])), [mailboxes]);
 	const { query } = useMailSearch();
 	const isMobile = useIsMobile();
 	const [offset, setOffset] = useState(0);
@@ -595,6 +611,7 @@ export function MessageFolderPage({
 							active={message.id === selectedMessageId}
 							compact={compact || isMobile}
 							currentAccountName={currentAccountName}
+							mailbox={allInboxes ? mailboxById.get(message.mailboxId ?? "") : undefined}
 							onSelectedChange={updateSelectedMessage}
 							onMessageAction={(messageId, action) => {
 								setActionError(null);

@@ -7,6 +7,7 @@ import { ListRow } from "@/components/ui/list";
 import { cn } from "@/lib/utils";
 import DomainDnsDetails from "./DomainDnsDetails";
 import DomainDnsSkeleton from "./DomainDnsSkeleton";
+import DomainIconEditor from "./DomainIconEditor";
 import { dnsAuthRecords, getDnsAuthStatusLabel } from "./utils";
 import {
   Check,
@@ -109,6 +110,8 @@ export default function DomainItemCard({
               </Badge>
             )}
           </div>
+
+          <DomainIconEditor key={`${item.iconLabel ?? ""}${item.iconColor ?? ""}`} domain={item} />
 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
             {auth &&

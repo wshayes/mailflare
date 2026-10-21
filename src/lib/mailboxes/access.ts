@@ -56,6 +56,8 @@ export async function listAccessibleMailboxes(db: AppDatabase, user: Pick<Sessio
 			disabled: mailboxes.disabled,
 			createdAt: mailboxes.createdAt,
 			hostname: domains.hostname,
+			iconLabel: domains.iconLabel,
+			iconColor: domains.iconColor,
 		})
 		.from(mailboxes)
 		.innerJoin(domains, eq(mailboxes.domainId, domains.id))
@@ -89,6 +91,8 @@ export async function listAccessibleMailboxes(db: AppDatabase, user: Pick<Sessio
 			disabled: mailboxes.disabled,
 			createdAt: mailboxes.createdAt,
 			hostname: domains.hostname,
+			iconLabel: domains.iconLabel,
+			iconColor: domains.iconColor,
 			permission: mailboxAccess.permission,
 		})
 		.from(mailboxAccess)

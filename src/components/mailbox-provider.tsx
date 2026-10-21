@@ -28,6 +28,8 @@ export type MailboxOption = {
 	domainId: string;
 	localPart: string;
 	hostname: string;
+	iconLabel?: string | null;
+	iconColor?: string | null;
 	displayName: string | null;
 	signature?: string | null;
 	autoReplyEnabled?: boolean;

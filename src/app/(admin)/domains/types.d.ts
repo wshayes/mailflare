@@ -13,6 +13,8 @@ export type Domain = {
 	zoneId: string;
 	/** Added with DNS skipped: the Cloudflare zone is attached on first setup. */
 	dnsSkipped?: boolean;
+	iconLabel?: string | null;
+	iconColor?: string | null;
 };
 
 export type DomainPreflight = {

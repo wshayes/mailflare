@@ -1,3 +1,4 @@
+import type { MailboxOption } from "@/components/mailbox-provider";
 import type { TranslationKey } from "@/lib/i18n/types";
 import type { LucideIcon } from "lucide-react";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
@@ -26,6 +27,8 @@ export type MessageListRowProps = {
 	active?: boolean;
 	compact?: boolean;
 	currentAccountName?: string;
+	/** Set in All inboxes, so the row shows which mailbox it belongs to. */
+	mailbox?: MailboxOption;
 	onSelectedChange: (messageId: string, selected: boolean) => void;
 	onMessageAction: (messageId: string, action: RowMessageAction) => Promise<void>;
 	dragMessageIds: string[];

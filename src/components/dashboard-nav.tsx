@@ -52,7 +52,7 @@ import {
   moveMessagesToSystemFolder,
 } from "./dashboard-nav-utils";
 import { getMailboxAddress, getMailboxName } from "./mailbox-selector-utils";
-import { getAvatarColorStyle } from "@/lib/avatar-colors";
+import { DomainBadge } from "./domain-badge";
 import { NavSectionHeader, useSectionOpen } from "./nav-section-header";
 import { ReorderableList } from "./reorderable-list";
 import { readStorage, writeStorage } from "./reorderable-list-utils";
@@ -222,16 +222,7 @@ export function DashboardNav({ className }: { className?: string }) {
           <NavItem key={mailbox.id} link={{
             href: "/inbox",
             label: getMailboxName(mailbox),
-            // ponytail: first letter + one of 10 colours hashed from the domain; two domains can collide, upload per-domain icons if that bites.
-            iconNode: (
-              <span
-                aria-hidden="true"
-                className="flex h-4 w-4 shrink-0 items-center justify-center rounded text-[10px] font-bold max-md:h-5 max-md:w-5"
-                style={getAvatarColorStyle(mailbox.hostname)}
-              >
-                {mailbox.hostname.charAt(0).toUpperCase()}
-              </span>
-            ),
+            iconNode: <DomainBadge hostname={mailbox.hostname} iconLabel={mailbox.iconLabel} iconColor={mailbox.iconColor} className="max-md:h-5 max-md:min-w-5" />,
             suffix: mailbox.type === "shared" && (
               <UsersRound role="img" aria-label={t("account.sharedInbox")} className="ml-1.5 inline h-3.5 w-3.5 align-[-2px] text-blue-600" />
             ),

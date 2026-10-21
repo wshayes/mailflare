@@ -24,6 +24,11 @@ export function getMessageParty(
 	return message.fromContactName ?? (message.fromAddr ? getEmailDisplayName(message.fromAddr) : t("list.unknownSender"));
 }
 
+/** The full address(es) behind the name `getMessageParty` shows, for its hover. */
+export function getMessagePartyAddress(message: Message, folder: MessageFolderConfig["folder"]): string {
+	return folder === "drafts" || folder === "sent" || folder === "scheduled" ? message.toAddr : message.fromAddr;
+}
+
 /** "Maya Chen, +2" for a multi-recipient message, or just the one name. */
 export function formatRecipientSummary(toAddr: string, firstContactName?: string | null, t: Translator = defaultTranslator): string {
 	const entries = splitEmailAddressList(toAddr);
