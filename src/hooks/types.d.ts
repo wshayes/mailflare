@@ -97,6 +97,7 @@ export type MailboxCount = {
 	total: number;
 	unread: number;
 	inbox: number;
+	inboxUnread: number;
 };
 
 export type MessageCounts = {

@@ -45,7 +45,7 @@ export function NavItem({ link, iconClassName, labelClassName, wrap }: Props) {
 
   const Icon = link.icon;
   if (!Icon) return null;
-  const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+  const active = link.active ?? (pathname === link.href || pathname.startsWith(`${link.href}/`));
   const classes = cn(
     "flex h-9 items-center gap-3 rounded-r-full text-sm text-neutral-700 transition-colors max-md:min-h-11 max-md:text-base",
     minimal && "relative mx-auto w-10 justify-center rounded-full px-0",
@@ -56,6 +56,7 @@ export function NavItem({ link, iconClassName, labelClassName, wrap }: Props) {
     link.count && "font-semibold",
     link.primary && minimal && "h-11 w-11 rounded-2xl px-0",
     wrap && !minimal && "h-auto min-h-9 items-start py-2",
+    link.indent && !minimal && "pl-11",
   );
   const dropProps = link.onMessageDrop
     ? {
@@ -106,6 +107,7 @@ export function NavItem({ link, iconClassName, labelClassName, wrap }: Props) {
   }
 
   async function navigate(event: MouseEvent<HTMLAnchorElement>) {
+    link.onSelect?.();
     if (
       !link.preloadMessages ||
       active ||

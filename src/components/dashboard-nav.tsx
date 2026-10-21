@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import {
   Archive,
   CalendarClock,
+  ChevronRight,
   Clock,
   FileText,
   Folder,
@@ -19,6 +20,7 @@ import {
   ShieldAlert,
   Star,
   Trash2,
+  UsersRound,
 } from "lucide-react";
 import { useSelectedMailbox } from "@/components/mailbox-provider";
 import { Button } from "@/components/ui/button";
@@ -49,6 +51,7 @@ import {
   moveMessagesToCustomFolder,
   moveMessagesToSystemFolder,
 } from "./dashboard-nav-utils";
+import { getMailboxName } from "./mailbox-selector-utils";
 import { NavSectionHeader, useSectionOpen } from "./nav-section-header";
 import { ReorderableList } from "./reorderable-list";
 import { readStorage, writeStorage } from "./reorderable-list-utils";
@@ -103,8 +106,12 @@ export function DashboardNav({ className }: { className?: string }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [foldersOpen, setFoldersOpen] = useState(false);
   const [foldersSectionOpen, toggleFoldersSection] = useSectionOpen("mailflare:nav:folders-section-open");
-  const { selectedMailbox, isLoading, listMailboxId } = useSelectedMailbox();
+  const { selectedMailbox, setSelectedMailbox, mailboxes, isLoading, allInboxes, setAllInboxes, listMailboxId } = useSelectedMailbox();
   const { counts } = useMessageCounts(listMailboxId, !isLoading);
+  // With several mailboxes, Inbox becomes All inboxes with a row per mailbox, like Apple Mail.
+  const showInboxGroup = !minimal && mailboxes.length > 1;
+  const { counts: allCounts } = useMessageCounts(null, !isLoading && showInboxGroup);
+  const [inboxesOpen, toggleInboxes] = useSectionOpen("mailflare:nav:inboxes-open");
   const [folders, setFolders] = useState<CustomFolder[]>([]);
   const [newFolderName, setNewFolderName] = useState("");
   const [newFolderColor, setNewFolderColor] =
@@ -186,6 +193,47 @@ export function DashboardNav({ className }: { className?: string }) {
   // The icon rail has no room for text toggles. When collapsed, the page you are on stays listed on its own.
   const showAllMoreLinks = minimal || moreOpen;
   const foldersOverflow = !minimal && folders.length > MAX_VISIBLE_FOLDERS;
+  const onInbox = isActiveHref("/inbox");
+
+  function renderInboxGroup(link: NavLink) {
+    return (
+      <div>
+        <div className="relative">
+          <NavItem link={{
+            ...link,
+            label: t("account.allInboxes"),
+            count: getFolderNavCount("inbox", allCounts.folders),
+            preloadMessages: false,
+            active: onInbox && allInboxes,
+            onSelect: () => setAllInboxes(true),
+          }} />
+          <button
+            type="button"
+            onClick={toggleInboxes}
+            aria-expanded={inboxesOpen}
+            aria-label={t("account.inboxes", { count: mailboxes.length })}
+            className="absolute left-1 top-1/2 flex h-6 w-5 -translate-y-1/2 items-center justify-center rounded text-neutral-500 hover:text-neutral-900"
+          >
+            <ChevronRight className={cn("h-3.5 w-3.5 transition-transform", inboxesOpen && "rotate-90")} />
+          </button>
+        </div>
+        {inboxesOpen && mailboxes.map((mailbox) => (
+          <NavItem key={mailbox.id} link={{
+            href: "/inbox",
+            label: getMailboxName(mailbox),
+            icon: mailbox.type === "shared" ? UsersRound : Inbox,
+            indent: true,
+            count: allCounts.mailboxes.find((count) => count.mailboxId === mailbox.id)?.inboxUnread,
+            active: onInbox && !allInboxes && selectedMailbox?.id === mailbox.id,
+            onSelect: () => {
+              setSelectedMailbox(mailbox);
+              setAllInboxes(false);
+            },
+          }} />
+        ))}
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (!selectedMailbox?.id) {
@@ -244,7 +292,7 @@ export function DashboardNav({ className }: { className?: string }) {
         storageKey="mailflare:nav:layout"
         enabled={!minimal}
         lists={[
-          { id: "main", items: mainLinks.map((link) => ({ id: link.href!, node: <NavItem link={link} /> })) },
+          { id: "main", items: mainLinks.map((link) => ({ id: link.href!, node: link.href === "/inbox" && showInboxGroup ? renderInboxGroup(link) : <NavItem link={link} /> })) },
           {
             id: "more",
             before: minimal ? undefined : <NavToggle expanded={moreOpen} onClick={toggleMore} />,
