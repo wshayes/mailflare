@@ -7,6 +7,7 @@ let mailboxesRequest: Promise<MailboxOption[]> | null = null;
 let mailboxesRequestSessionToken: string | null = null;
 let cacheGeneration = 0;
 export const SELECTED_MAILBOX_STORAGE_KEY = "selected-mailbox-id";
+export const ALL_INBOXES_STORAGE_KEY = "all-inboxes";
 
 /**
  * The primary mailbox is the one at the account address; it is the only mailbox
@@ -28,6 +29,7 @@ export function clearMailboxClientState() {
 	clearMailboxesCache();
 	if (typeof window !== "undefined") {
 		localStorage.removeItem(SELECTED_MAILBOX_STORAGE_KEY);
+		localStorage.removeItem(ALL_INBOXES_STORAGE_KEY);
 	}
 }
 

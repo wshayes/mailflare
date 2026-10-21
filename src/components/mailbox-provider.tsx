@@ -12,6 +12,7 @@ import {
 	clearMailboxesCache,
 	fetchMailboxOptions,
 	isIdentityMailbox,
+	ALL_INBOXES_STORAGE_KEY,
 	SELECTED_MAILBOX_STORAGE_KEY,
 } from "./mailbox-provider-utils";
 import {
@@ -44,6 +45,11 @@ type MailboxContextValue = {
 	setSelectedMailbox: (mb: MailboxOption | null) => void;
 	mailboxes: MailboxOption[];
 	isLoading: boolean;
+	/** Message lists span every accessible mailbox; `selectedMailbox` still drives compose and settings. */
+	allInboxes: boolean;
+	setAllInboxes: (value: boolean) => void;
+	/** The mailbox message lists and counts filter on: undefined in All inboxes. */
+	listMailboxId: string | undefined;
 };
 
 const MailboxContext = createContext<MailboxContextValue | null>(null);
@@ -58,6 +64,7 @@ export function MailboxProvider({ children }: { children: ReactNode }) {
 	const [mailboxes, setMailboxes] = useState<MailboxOption[]>([]);
 	const [selectedMailbox, setSelectedMailboxState] = useState<MailboxOption | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [allInboxes, setAllInboxesState] = useState(false);
 
 	useEffect(() => {
 		let cancelled = false;
@@ -67,6 +74,7 @@ export function MailboxProvider({ children }: { children: ReactNode }) {
 			.then((items) => {
 				if (cancelled || sessionToken !== getClientSessionToken()) return;
 				setMailboxes(items);
+				setAllInboxesState(items.length > 1 && localStorage.getItem(ALL_INBOXES_STORAGE_KEY) === "1");
 
 				const storedId = localStorage.getItem(SELECTED_MAILBOX_STORAGE_KEY);
 				if (storedId) {
@@ -97,6 +105,7 @@ export function MailboxProvider({ children }: { children: ReactNode }) {
 		function resetMailboxState() {
 			setMailboxes([]);
 			setSelectedMailboxState(null);
+			setAllInboxesState(false);
 			setIsLoading(true);
 		}
 
@@ -146,8 +155,15 @@ export function MailboxProvider({ children }: { children: ReactNode }) {
 		}
 	}, []);
 
+	const setAllInboxes = useCallback((value: boolean) => {
+		setAllInboxesState(value);
+		if (value) localStorage.setItem(ALL_INBOXES_STORAGE_KEY, "1");
+		else localStorage.removeItem(ALL_INBOXES_STORAGE_KEY);
+	}, []);
+	const listMailboxId = allInboxes ? undefined : selectedMailbox?.id;
+
 	return (
-		<MailboxContext.Provider value={{ selectedMailbox, setSelectedMailbox, mailboxes, isLoading }}>
+		<MailboxContext.Provider value={{ selectedMailbox, setSelectedMailbox, mailboxes, isLoading, allInboxes, setAllInboxes, listMailboxId }}>
 			{children}
 		</MailboxContext.Provider>
 	);

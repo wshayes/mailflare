@@ -309,6 +309,7 @@
 	"account.calendar": "Kalendar",
 	"account.settings": "Tetapan",
 	"account.inboxes": "Peti masuk ({count})",
+	"account.allInboxes": "Semua peti masuk",
 	"account.otherAccounts": "Akaun lain",
 	"account.admin": "Admin",
 	"account.addAnother": "Tambah akaun lain",

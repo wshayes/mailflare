@@ -309,6 +309,7 @@
 	"account.calendar": "Calendar",
 	"account.settings": "Settings",
 	"account.inboxes": "Inboxes ({count})",
+	"account.allInboxes": "All inboxes",
 	"account.otherAccounts": "Other accounts",
 	"account.admin": "Admin",
 	"account.addAnother": "Add another account",

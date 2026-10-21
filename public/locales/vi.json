@@ -305,6 +305,7 @@
 	"account.calendar": "Lịch",
 	"account.settings": "Cài đặt",
 	"account.inboxes": "Hộp thư đến ({count})",
+	"account.allInboxes": "Tất cả hộp thư",
 	"account.otherAccounts": "Tài khoản khác",
 	"account.admin": "Quản trị",
 	"account.addAnother": "Thêm tài khoản khác",

@@ -313,6 +313,7 @@
 	"account.calendar": "Calendario",
 	"account.settings": "Configuración",
 	"account.inboxes": "Bandejas ({count})",
+	"account.allInboxes": "Todas las bandejas",
 	"account.otherAccounts": "Otras cuentas",
 	"account.admin": "Administración",
 	"account.addAnother": "Añadir otra cuenta",

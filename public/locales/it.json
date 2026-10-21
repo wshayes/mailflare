@@ -313,6 +313,7 @@
 	"account.calendar": "Calendario",
 	"account.settings": "Impostazioni",
 	"account.inboxes": "Caselle ({count})",
+	"account.allInboxes": "Tutte le caselle",
 	"account.otherAccounts": "Altri account",
 	"account.admin": "Amministrazione",
 	"account.addAnother": "Aggiungi un altro account",

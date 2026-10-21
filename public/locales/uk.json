@@ -317,6 +317,7 @@
 	"account.calendar": "Календар",
 	"account.settings": "Налаштування",
 	"account.inboxes": "Вхідні ({count})",
+	"account.allInboxes": "Усі вхідні",
 	"account.otherAccounts": "Інші облікові записи",
 	"account.admin": "Адміністратор",
 	"account.addAnother": "Додати інший обліковий запис",

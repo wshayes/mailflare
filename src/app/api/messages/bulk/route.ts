@@ -33,6 +33,7 @@ export async function POST(request: Request) {
 	const read = getReadValueForBulkAction(payload.action);
 	const db = getDb(env);
 	let folderId: string | null | undefined;
+	let folderMailboxId: string | null = null;
 
 	if (payload.action === "folder") {
 		if (!payload.folderId) {
@@ -51,6 +52,7 @@ export async function POST(request: Request) {
 			return NextResponse.json({ error: "Folder not found" }, { status: 404 });
 		}
 		folderId = folder.id;
+		folderMailboxId = folder.mailboxId;
 	} else if (payload.action === "spam" || payload.action === "trash" || payload.action === "inbox" || payload.action === "archive") {
 		folderId = null;
 	}
@@ -71,6 +73,8 @@ export async function POST(request: Request) {
 
 	for (const message of selectedMessages) {
 		if (!message.mailboxId) continue;
+		// A folder belongs to one mailbox; filing another mailbox's mail there would hide it from both.
+		if (folderMailboxId && message.mailboxId !== folderMailboxId) continue;
 		const access = await getMailboxAccessLevel(db, user, message.mailboxId);
 		const canUpdate = payload.action === "read" || payload.action === "unread" ? access?.canRead : access?.canManage;
 		if (!canUpdate) continue;

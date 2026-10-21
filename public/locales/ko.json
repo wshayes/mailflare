@@ -309,6 +309,7 @@
 	"account.calendar": "캘린더",
 	"account.settings": "설정",
 	"account.inboxes": "받은편지함 ({count})",
+	"account.allInboxes": "모든 받은편지함",
 	"account.otherAccounts": "다른 계정",
 	"account.admin": "관리자",
 	"account.addAnother": "다른 계정 추가",

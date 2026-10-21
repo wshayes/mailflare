@@ -309,6 +309,7 @@
 	"account.calendar": "දින දර්ශනය",
 	"account.settings": "සැකසීම්",
 	"account.inboxes": "එන ලිපි පෙට්ටි ({count})",
+	"account.allInboxes": "සියලු එන ලිපි",
 	"account.otherAccounts": "වෙනත් ගිණුම්",
 	"account.admin": "පරිපාලක",
 	"account.addAnother": "තවත් ගිණුමක් එක් කරන්න",

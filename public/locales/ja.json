@@ -305,6 +305,7 @@
 	"account.calendar": "カレンダー",
 	"account.settings": "設定",
 	"account.inboxes": "受信トレイ（{count}）",
+	"account.allInboxes": "すべての受信トレイ",
 	"account.otherAccounts": "その他のアカウント",
 	"account.admin": "管理",
 	"account.addAnother": "別のアカウントを追加",

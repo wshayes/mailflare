@@ -309,6 +309,7 @@
 	"account.calendar": "நாட்காட்டி",
 	"account.settings": "அமைப்புகள்",
 	"account.inboxes": "இன்பாக்ஸ்கள் ({count})",
+	"account.allInboxes": "அனைத்து இன்பாக்ஸ்களும்",
 	"account.otherAccounts": "பிற கணக்குகள்",
 	"account.admin": "நிர்வாகி",
 	"account.addAnother": "மற்றொரு கணக்கைச் சேர்",

@@ -305,6 +305,7 @@
 	"account.calendar": "日历",
 	"account.settings": "设置",
 	"account.inboxes": "收件箱（{count}）",
+	"account.allInboxes": "所有收件箱",
 	"account.otherAccounts": "其他账户",
 	"account.admin": "管理",
 	"account.addAnother": "添加其他账户",

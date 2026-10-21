@@ -317,6 +317,7 @@
 	"account.calendar": "Kalendarz",
 	"account.settings": "Ustawienia",
 	"account.inboxes": "Skrzynki odbiorcze ({count})",
+	"account.allInboxes": "Wszystkie skrzynki",
 	"account.otherAccounts": "Inne konta",
 	"account.admin": "Administracja",
 	"account.addAnother": "Dodaj kolejne konto",

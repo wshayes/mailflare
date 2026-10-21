@@ -301,7 +301,7 @@ export function MessageFolderPage({
 }: MessageFolderPageProps) {
 	const { t } = useLanguage();
 	const title = config.titleKey ? t(config.titleKey) : config.title;
-	const { selectedMailbox, isLoading: mailboxesLoading } = useSelectedMailbox();
+	const { selectedMailbox, isLoading: mailboxesLoading, allInboxes, listMailboxId } = useSelectedMailbox();
 	const { query } = useMailSearch();
 	const isMobile = useIsMobile();
 	const [offset, setOffset] = useState(0);
@@ -314,14 +314,14 @@ export function MessageFolderPage({
 	const [unreadOnly, setUnreadOnly] = useState(false);
 	const [conversationView] = useConversationView();
 	const grouped = conversationView && config.folder !== "drafts";
-	const { messages, isLoading, total, limit, updateMessages } = useMessages(config.folder, selectedMailbox?.id, {
+	const { messages, isLoading, total, limit, updateMessages } = useMessages(config.folder, listMailboxId, {
 		query,
 		limit: pageSize,
 		offset,
 		read: unreadOnly ? "unread" : "all",
 		group: grouped ? "thread" : undefined,
 	}, !mailboxesLoading, config.folderId);
-	const { counts } = useMessageCounts(selectedMailbox?.id, !mailboxesLoading);
+	const { counts } = useMessageCounts(listMailboxId, !mailboxesLoading);
 	usePageLoading(mailboxesLoading || isLoading);
 	const headerIcons = config.headerIcons ?? [];
 	const hasActiveFilters = !!query.trim();
@@ -330,8 +330,9 @@ export function MessageFolderPage({
 		: counts.folders[config.folder];
 	const titleTotal = folderCount?.total ?? total;
 	const titleUnread = folderCount?.unread ?? 0;
-	const mailboxAddress = getMailboxAddress(selectedMailbox);
-	const currentAccountName = selectedMailbox?.displayName ?? selectedMailbox?.localPart;
+	const mailboxAddress = allInboxes ? t("account.allInboxes") : getMailboxAddress(selectedMailbox);
+	// In All inboxes an outbound row names its own mailbox, which the API sends as `fromContactName`.
+	const currentAccountName = allInboxes ? undefined : selectedMailbox?.displayName ?? selectedMailbox?.localPart;
 	const pageRange = getPageRange(offset, messages.length, total);
 	const selectedMessages = selection?.selectedMessages ?? internalSelectedMessages;
 	const setSelectedMessages =
@@ -351,7 +352,7 @@ export function MessageFolderPage({
 	useEffect(() => {
 		setOffset(0);
 		setSelectedMessages([]);
-	}, [query, selectedMailbox?.id, config.folder, config.folderId, unreadOnly, grouped]);
+	}, [query, listMailboxId, config.folder, config.folderId, unreadOnly, grouped]);
 
 	useEffect(() => {
 		setSelectedMessages([]);
@@ -414,7 +415,7 @@ export function MessageFolderPage({
 		});
 	}
 
-	const permanentDeleteFolder = !config.folderId && supportsPermanentDelete(config.folder) ? config.folder : null;
+	const permanentDeleteFolder = !config.folderId && !allInboxes && supportsPermanentDelete(config.folder) ? config.folder : null;
 	async function emptyFolder() {
 		if (!permanentDeleteFolder || !selectedMailbox?.id) return;
 		if (!window.confirm(getEmptyFolderConfirmText(permanentDeleteFolder, titleTotal, t))) return;

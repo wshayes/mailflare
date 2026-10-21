@@ -309,6 +309,7 @@
 	"account.calendar": "ক্যালেন্ডার",
 	"account.settings": "সেটিংস",
 	"account.inboxes": "ইনবক্স ({count})",
+	"account.allInboxes": "সব ইনবক্স",
 	"account.otherAccounts": "অন্যান্য অ্যাকাউন্ট",
 	"account.admin": "অ্যাডমিন",
 	"account.addAnother": "আরেকটি অ্যাকাউন্ট যোগ করুন",

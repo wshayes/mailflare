@@ -309,6 +309,7 @@
 	"account.calendar": "تقویم",
 	"account.settings": "تنظیمات",
 	"account.inboxes": "صندوق‌های ورودی ({count})",
+	"account.allInboxes": "همه صندوق‌ها",
 	"account.otherAccounts": "سایر حساب‌ها",
 	"account.admin": "مدیر",
 	"account.addAnother": "افزودن حساب دیگر",

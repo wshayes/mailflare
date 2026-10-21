@@ -309,6 +309,7 @@
 	"account.calendar": "Agenda",
 	"account.settings": "Instellingen",
 	"account.inboxes": "Postvakken IN ({count})",
+	"account.allInboxes": "Alle inboxen",
 	"account.otherAccounts": "Andere accounts",
 	"account.admin": "Beheerder",
 	"account.addAnother": "Nog een account toevoegen",

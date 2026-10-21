@@ -313,6 +313,7 @@
 	"account.calendar": "Agenda",
 	"account.settings": "Paramètres",
 	"account.inboxes": "Boîtes ({count})",
+	"account.allInboxes": "Toutes les boîtes",
 	"account.otherAccounts": "Autres comptes",
 	"account.admin": "Administration",
 	"account.addAnother": "Ajouter un autre compte",

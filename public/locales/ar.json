@@ -325,6 +325,7 @@
 	"account.calendar": "التقويم",
 	"account.settings": "الإعدادات",
 	"account.inboxes": "صناديق الوارد ({count})",
+	"account.allInboxes": "كل البريد الوارد",
 	"account.otherAccounts": "حسابات أخرى",
 	"account.admin": "الإدارة",
 	"account.addAnother": "إضافة حساب آخر",
