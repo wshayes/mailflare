@@ -44,7 +44,7 @@ export function NavItem({ link, iconClassName, labelClassName, wrap }: Props) {
   }
 
   const Icon = link.icon;
-  if (!Icon) return null;
+  if (!Icon && !link.iconNode) return null;
   const active = link.active ?? (pathname === link.href || pathname.startsWith(`${link.href}/`));
   const classes = cn(
     "flex h-9 items-center gap-3 rounded-r-full text-sm text-neutral-700 transition-colors max-md:min-h-11 max-md:text-base",
@@ -85,11 +85,13 @@ export function NavItem({ link, iconClassName, labelClassName, wrap }: Props) {
         aria-label={minimal ? link.label : undefined}
         {...dropProps}
       >
-        <Icon
-          size={19}
-          style={{ color: link.iconColor }}
-          className={iconClassName}
-        />
+        {Icon && (
+          <Icon
+            size={19}
+            style={{ color: link.iconColor }}
+            className={iconClassName}
+          />
+        )}
         {!minimal && <span className={cn("flex-1", typeof link.count === "number" && link.count > 0 && "font-semibold")}>{link.label}</span>}
         {!minimal && typeof link.count === "number" && link.count > 0 && (
           <span className="ml-auto mr-3 rounded-full px-2 py-0.5 text-sm font-semibold text-neutral-700">
@@ -145,16 +147,19 @@ export function NavItem({ link, iconClassName, labelClassName, wrap }: Props) {
       href={link.href}
       onClick={navigate}
       aria-label={minimal ? link.label : undefined}
+      title={link.title}
       className={cn(!minimal && "pl-6", classes)}
       {...dropProps}
     >
-      <Icon
-        // className={minimal ? "h-4 w-4" : "h-5 w-5"}
-        style={{ color: link.iconColor }}
-        size={16}
-        className={cn("max-md:h-5 max-md:w-5", wrap && !minimal && "mt-0.5 shrink-0", iconClassName)}
-      />
-      {!minimal && <span className={cn("flex-1", wrap && "min-w-0 break-words leading-5 max-md:leading-6", labelClassName, typeof link.count === "number" && link.count > 0 && "font-semibold")}>{link.label}</span>}
+      {link.iconNode ?? (Icon && (
+        <Icon
+          // className={minimal ? "h-4 w-4" : "h-5 w-5"}
+          style={{ color: link.iconColor }}
+          size={16}
+          className={cn("max-md:h-5 max-md:w-5", wrap && !minimal && "mt-0.5 shrink-0", iconClassName)}
+        />
+      ))}
+      {!minimal && <span className={cn("flex-1", wrap && "min-w-0 break-words leading-5 max-md:leading-6", labelClassName, typeof link.count === "number" && link.count > 0 && "font-semibold")}>{link.label}{link.suffix}</span>}
       {!minimal && typeof link.count === "number" && link.count > 0 && (
         <span className={cn("ml-auto mr-3 rounded-full px-2 py-0.5 text-sm font-semibold text-neutral-700", wrap && "shrink-0 py-0 leading-5")}>
           {link.count > 99 ? "99+" : link.count}
